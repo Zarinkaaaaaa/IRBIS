@@ -97,7 +97,7 @@ p {
     gap: 38px;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 430px) {
     .container {
         max-width: 375px;
         /* Уменьшаем ширину контейнера */
@@ -269,7 +269,7 @@ p {
 }
 
 /* Адаптив для экранов 480px и меньше */
-@media (max-width: 480px) {
+@media (max-width: 430px) {
     .header .logo {
         width: 216px;
         height: 65.5px;
@@ -465,7 +465,7 @@ p {
 
 /*BANNER*/
 
-@media (max-width: 480px) {
+@media (max-width: 430px) {
     .header_banner {
         height: auto;
         /* Автоматическая высота для мобильных */
@@ -724,6 +724,18 @@ p {
         width: 50%;
     }
 
+    .call_us_section_text h2 {
+        font-size: 36px;
+    }
+    .gallery_section_text h2{
+        font-size: 36;
+    }
+    .call_us_section_text p{
+        font-size: 18px;
+    }
+    .gallery_section_text p{
+        font-size: 18px;
+    }
     .call_us_section_text {
         padding-top: 143px;
     }
@@ -741,7 +753,7 @@ p {
     }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 430px) {
     .call_us {
         height: auto;
         /* Автоматическая высота для мобильных */
@@ -998,7 +1010,7 @@ p {
     /* Задержка для заголовка */
 }
 
-@media (max-width:480px) {
+@media (max-width:430px) {
     .about_us {
         background: url(../media/about_us/background.png);
         background-size: cover;
@@ -1280,7 +1292,7 @@ p {
     margin-top: 63px;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 430px) {
 
     .our_projects {
         padding: 40px 0;
@@ -1626,7 +1638,7 @@ p {
     cursor: pointer;
 }
 
-@media (max-width:480px) {
+@media (max-width:430px) {
     .our_partners_section_title {
         flex-direction: column;
         align-items: flex-start;
@@ -1770,7 +1782,7 @@ p {
     cursor: pointer;
 }
 
-@media (max-width:480px) {
+@media (max-width:430px) {
     .faq_section_content_images {
         display: none;
     }
@@ -1942,7 +1954,7 @@ p {
     font-family: 'helvetica';
 }
 
-@media (max-width:480px) {
+@media (max-width:430px) {
     .service {
         padding: 145px 0px 70px 0px;
     }
@@ -2045,7 +2057,7 @@ p {
     font-family: 'helvetica';
 }
 
-@media (max-width:480px) {
+@media (max-width:430px) {
     .contacts {
         padding-bottom: 60px;
         /* Уменьшаем отступ снизу */
@@ -2263,7 +2275,7 @@ footer {
     height: 32px;
 }
 
-@media (max-width:480px) {
+@media (max-width:430px) {
     footer {
         padding-bottom: 30px;
         /* Уменьшаем отступ снизу */
