@@ -120,6 +120,7 @@ p {
         flex-direction: column;
         /* Контакты в колонку */
         gap: 10px;
+        align-items: flex-start;
         /* Отступ между контактами */
     }
 
@@ -343,7 +344,7 @@ p {
         display: block;
         /* Показываем кнопку CALL US при активном бургер-меню */
         position: absolute;
-        top: calc(100% + 442px);
+        top: calc(100% + 200px);
         /* Располагаем кнопку ниже навигации */
         left: 50%;
         transform: translateX(-50%);
