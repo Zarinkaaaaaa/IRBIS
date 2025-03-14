@@ -262,18 +262,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const filterLinks = document.querySelectorAll('.our_projects_filter a');
     const cards = document.querySelectorAll('.our_projects_card');
 
-    // Обработчик клика на кнопки фильтра
+    
     filterLinks.forEach(link => {
         link.addEventListener('click', (e) => {
-            e.preventDefault(); // Отменяем стандартное поведение ссылки
+            e.preventDefault(); 
 
-            // Убираем активный класс у всех кнопок
+            
             filterLinks.forEach(link => link.classList.remove('active'));
 
-            // Добавляем активный класс к текущей кнопке
+          
             link.classList.add('active');
 
-            // Получаем значение фильтра
+           
             const filter = link.getAttribute('data-filter');
 
             // Фильтруем карточки
