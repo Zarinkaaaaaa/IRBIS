@@ -173,7 +173,7 @@ p {
     /* Затемненный фон */
     position: fixed;
     /* Фиксируем фон */
-    top: 43px;
+    top: 42px;
     /* Прижимаем к верхнему краю */
     left: 0;
     /* Прижимаем к левому краю */
@@ -269,6 +269,10 @@ p {
     transform: rotate(-45deg) translate(5px, -5px);
 }
 
+.adapt{
+    display: none;
+}
+
 /* Адаптив для экранов 480px и меньше */
 @media (max-width: 430px) {
     .header .logo {
@@ -298,6 +302,9 @@ p {
         display: flex;
     }
 
+    .header_nav.active .header_button{
+        display: flex;
+    }
     .header_nav.active {
         display: flex;
         /* Показываем навигацию при активном бургер-меню */
@@ -320,7 +327,6 @@ p {
         /* Выравниваем элементы по центру */
         align-items: center;
     }
-
     .header_nav {
         display: none;
         /* Скрываем навигацию по умолчанию */
@@ -338,17 +344,6 @@ p {
         /* Показываем навигацию */
         transform: translateY(0);
         /* Возвращаем навигацию на место */
-    }
-
-    .header_button.active {
-        display: block;
-        /* Показываем кнопку CALL US при активном бургер-меню */
-        position: absolute;
-        top: calc(100% + 250px);
-        /* Располагаем кнопку ниже навигации */
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 1000;
     }
 
     .header_nav a {
@@ -1830,7 +1825,7 @@ p {
         width: 100%;
         /* Растягиваем на всю ширину */
         height: 0px;
-        bottom: -30px;
+        bottom: -13px;
         /* Уменьшаем отступ */
     }
 
@@ -1865,7 +1860,7 @@ p {
 
     .faq_section_faq.active .faq_header::after {
         border: 0.5px solid #d8ba72;
-        bottom: -30px;
+        bottom: -60px;
         /* Уменьшаем отступ */
     }
 
@@ -1887,6 +1882,7 @@ p {
 
     .faq_section_faq .faqs {
         font-size: 16px;
+        width: 330px;
         /* Уменьшаем размер текста */
     }
 
