@@ -1,16 +1,11 @@
 document.querySelectorAll('.faq_header').forEach(header => {
     header.addEventListener('click', () => {
-        // Находим родительский элемент .faq_section_faq
         const faqItem = header.closest('.faq_section_faq');
-        // Находим блок с контентом
         const content = faqItem.querySelector('.faq_content');
-        // Находим стрелку
         const arrow = faqItem.querySelector('.faqs_arrow');
 
-        // Переключаем класс active
         faqItem.classList.toggle('active');
 
-        // Открываем или закрываем контент
         if (faqItem.classList.contains('active')) {
             content.style.maxHeight = content.scrollHeight + 'px';
             arrow.style.transform = 'rotate(270deg)';
@@ -19,7 +14,6 @@ document.querySelectorAll('.faq_header').forEach(header => {
             arrow.style.transform = 'rotate(90deg)';
         }
 
-        // Закрываем другие открытые элементы
         document.querySelectorAll('.faq_section_faq').forEach(item => {
             if (item !== faqItem && item.classList.contains('active')) {
                 item.classList.remove('active');
@@ -46,13 +40,12 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    const cardWidth = slides[0].offsetWidth + 27; // Ширина карточки + gap
+    const cardWidth = slides[0].offsetWidth + 27; 
 
     function changeSlide(direction) {
-        // Обновляем индекс текущего слайда
+        
         currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
 
-        // Вычисляем смещение для контейнера
         const offset = -currentSlide * cardWidth;
         slidesContainer.style.transform = `translateX(${offset}px)`;
     }
@@ -60,39 +53,35 @@ document.addEventListener('DOMContentLoaded', () => {
     if (prevButton && nextButton) {
         prevButton.addEventListener('click', () => {
             changeSlide(-1);
-            resetAutoScroll(); // Сбрасываем автоматическую прокрутку при клике
+            resetAutoScroll(); 
         });
         nextButton.addEventListener('click', () => {
             changeSlide(1);
-            resetAutoScroll(); // Сбрасываем автоматическую прокрутку при клике
+            resetAutoScroll(); 
         });
     } else {
         console.error('Кнопки "назад" или "вперед" не найдены!');
     }
 
-    // Функция для автоматической прокрутки
     let autoScrollInterval;
 
     function startAutoScroll() {
         autoScrollInterval = setInterval(() => {
-            changeSlide(1); // Переход к следующему слайду
-        }, 5000); // Интервал 5 секунд
+            changeSlide(1); 
+        }, 5000); 
     }
 
     function resetAutoScroll() {
-        clearInterval(autoScrollInterval); // Останавливаем текущий интервал
-        startAutoScroll(); // Запускаем новый интервал
+        clearInterval(autoScrollInterval); 
+        startAutoScroll(); 
     }
 
-    // Запускаем автоматическую прокрутку при загрузке страницы
     startAutoScroll();
 
-    // Останавливаем автоматическую прокрутку при наведении на слайдер
     slidesContainer.addEventListener('mouseenter', () => {
         clearInterval(autoScrollInterval);
     });
 
-    // Возобновляем автоматическую прокрутку, когда курсор убирают
     slidesContainer.addEventListener('mouseleave', () => {
         startAutoScroll();
     });
@@ -114,13 +103,11 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    const cardWidths = slide[0].offsetWidth + 27; // Ширина карточки + gap
+    const cardWidths = slide[0].offsetWidth + 27;
 
     function changSlide(direction) {
-        // Обновляем индекс текущего слайда
+        
         curntSlide = (curntSlide + direction + totalSlide) % totalSlide;
-
-        // Вычисляем смещение для контейнера
         const offset = -curntSlide * cardWidths;
         slideContainer.style.transform = `translateX(${offset}px)`;
     }
@@ -128,39 +115,34 @@ document.addEventListener('DOMContentLoaded', () => {
     if (prevBtn && nextBtn) {
         prevBtn.addEventListener('click', () => {
             changSlide(-1);
-            resetAutoScroll(); // Сбрасываем автоматическую прокрутку при клике
+            resetAutoScroll(); 
         });
         nextBtn.addEventListener('click', () => {
             changSlide(1);
-            resetAutoScroll(); // Сбрасываем автоматическую прокрутку при клике
+            resetAutoScroll(); 
         });
     } else {
         console.error('Кнопки "назад" или "вперед" не найдены!');
     }
 
-    // Функция для автоматической прокрутки
+   
     let autoScrollInterval;
 
     function startAutoScroll() {
         autoScrollInterval = setInterval(() => {
-            changSlide(1); // Переход к следующему слайду
-        }, 5000); // Интервал 5 секунд
+            changSlide(1); 
+        }, 5000); 
     }
-
     function resetAutoScroll() {
-        clearInterval(autoScrollInterval); // Останавливаем текущий интервал
-        startAutoScroll(); // Запускаем новый интервал
+        clearInterval(autoScrollInterval); 
+        startAutoScroll(); 
     }
 
-    // Запускаем автоматическую прокрутку при загрузке страницы
     startAutoScroll();
-
-    // Останавливаем автоматическую прокрутку при наведении на слайдер
     slideContainer.addEventListener('mouseenter', () => {
         clearInterval(autoScrollInterval);
     });
 
-    // Возобновляем автоматическую прокрутку, когда курсор убирают
     slideContainer.addEventListener('mouseleave', () => {
         startAutoScroll();
     });
@@ -172,18 +154,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const header = document.querySelector('.header');
     const headerContainer = document.querySelector('.header_container');
 
-    // Функция для проверки прокрутки
     function handleScroll() {
-        if (window.scrollY > 50) { // Если прокрутка больше 50px
-            header.classList.add('scrolled'); // Добавляем класс с фоном
+        if (window.scrollY > 50) { 
+            header.classList.add('scrolled'); 
         } else {
-            header.classList.remove('scrolled'); // Убираем класс с фоном
+            header.classList.remove('scrolled'); 
         }
     }
 
-    // Слушаем событие прокрутки
     window.addEventListener('scroll', handleScroll);
-});
+})
 
 
 
@@ -191,7 +171,6 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener('DOMContentLoaded', () => {
     const aboutUsSections = document.querySelectorAll('.about_us_section_content_part');
 
-    // Функция для проверки видимости элемента
     function isElementInViewport(el) {
         const rect = el.getBoundingClientRect();
         return (
@@ -202,21 +181,17 @@ document.addEventListener('DOMContentLoaded', () => {
         );
     }
 
-    // Функция для обработки прокрутки
     function handleScroll() {
         aboutUsSections.forEach(section => {
             if (isElementInViewport(section)) {
-                section.classList.add('visible'); // Добавляем класс для анимации
+                section.classList.add('visible');
             }
         });
     }
 
-    // Слушаем событие прокрутки
     window.addEventListener('scroll', handleScroll);
-
-    // Вызываем handleScroll при загрузке страницы, чтобы проверить видимость блоков
     handleScroll();
-});
+})
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -229,7 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
         headerButton.classList.toggle('active');
         burgerMenu.classList.toggle('active');
     });
-});
+})
 
 
 
@@ -246,31 +221,25 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    // Ширина карточки + отступ (gap)
-    const cardWidth = slid[0].offsetWidth + 40; // 40px — это ваш gap из CSS
+    const cardWidth = slid[0].offsetWidth + 40;
 
-    // Максимальное смещение (чтобы не выходить за пределы)
     const maxOffset = -(totalSlid - 1) * cardWidth;
 
     function changSlidee(direction) {
-        // Обновляем индекс текущего слайда
         cSlide += direction;
 
-        // Ограничиваем индекс слайда
         if (cSlide < 0) {
-            cSlide = 0; // Не выходим за пределы первой карточки
+            cSlide = 0;
         } else if (cSlide >= totalSlid) {
-            cSlide = 0; // Возвращаемся к первой карточке
-            slideContent.style.transition = 'none'; // Отключаем анимацию для мгновенного перехода
+            cSlide = 0; 
+            slideContent.style.transition = 'none'; 
             slideContent.style.transform = `translateX(0)`;
-            // Включаем анимацию обратно после мгновенного перехода
             setTimeout(() => {
                 slideContent.style.transition = 'transform 0.5s ease';
             }, 10);
             return;
         }
 
-        // Вычисляем смещение для контейнера
         const offset = -cSlide * cardWidth;
         slideContent.style.transform = `translateX(${offset}px)`;
     }
@@ -278,16 +247,14 @@ document.addEventListener('DOMContentLoaded', () => {
     if (prevClick && nextClick) {
         prevClick.addEventListener('click', () => {
             changSlidee(-1);
-            resetsAutoScroll(); // Сбрасываем автоматическую прокрутку при клике
         });
         nextClick.addEventListener('click', () => {
             changSlidee(1);
-            resetsAutoScroll(); // Сбрасываем автоматическую прокрутку при клике
         });
     } else {
         console.error('Кнопки "назад" или "вперед" не найдены!');
     }
-});
+})
 
 
 
@@ -322,6 +289,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // По умолчанию показываем все карточки
-    filterLinks[0].click(); // Имитируем клик на "All projects"
-});
+    
+    filterLinks[0].click(); 
+})

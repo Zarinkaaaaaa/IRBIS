@@ -167,12 +167,15 @@ p {
     background: url(../media/banner/banner.png);
     background-size: cover;
     background-position: center;
-    z-index: 1; /* Устанавливаем z-index выше, чем у контента */
-    transition: transform 0.5s ease; /* Плавная анимация */
+    z-index: 1;
+    /* Устанавливаем z-index выше, чем у контента */
+    transition: transform 0.5s ease;
+    /* Плавная анимация */
 }
 
 .header_banner:hover::before {
-    transform: scale(1.03); /* Увеличиваем фон на 10% */
+    transform: scale(1.03);
+    /* Увеличиваем фон на 10% */
 }
 
 /* Убедимся, что контент находится выше псевдоэлемента */
@@ -180,7 +183,8 @@ p {
 .container,
 .banner_consultation {
     position: relative;
-    z-index: 2; /* Контент должен быть выше фона */
+    z-index: 2;
+    /* Контент должен быть выше фона */
 }
 
 /*HEADER-BANNER*/
@@ -291,7 +295,7 @@ p {
     transform: rotate(-45deg) translate(5px, -5px);
 }
 
-.adapt{
+.adapt {
     display: none;
 }
 
@@ -324,9 +328,10 @@ p {
         display: flex;
     }
 
-    .header_nav.active .header_button{
+    .header_nav.active .header_button {
         display: flex;
     }
+
     .header_nav.active {
         display: flex;
         /* Показываем навигацию при активном бургер-меню */
@@ -349,6 +354,7 @@ p {
         /* Выравниваем элементы по центру */
         align-items: center;
     }
+
     .header_nav {
         display: none;
         /* Скрываем навигацию по умолчанию */
@@ -741,6 +747,7 @@ p {
     .call_us_image {
         width: 50%;
     }
+
     .call_us_section_text {
         padding-top: 143px;
     }
@@ -767,18 +774,23 @@ p {
         padding: 20px 0;
         /* Отступы сверху и снизу */
     }
+
     .call_us_section_text h2 {
         font-size: 36px;
     }
-    .gallery_section_text h2{
+
+    .gallery_section_text h2 {
         font-size: 36px;
     }
-    .call_us_section_text p{
+
+    .call_us_section_text p {
         font-size: 18px;
     }
-    .gallery_section_text p{
+
+    .gallery_section_text p {
         font-size: 18px;
     }
+
     .call_us_section_text {
         width: 100%;
         /* Растягиваем на всю ширину */
@@ -1287,11 +1299,14 @@ p {
 .our_projects_filter_link .gold {
     color: #d8ba72;
 }
+
 .our_projects_cards_container {
     width: 100%;
-    overflow: hidden; /* Скрываем карточки, которые выходят за пределы */
+    overflow: hidden;
+    /* Скрываем карточки, которые выходят за пределы */
     position: relative;
 }
+
 .our_projects_cards {
     display: flex;
     flex-direction: row;
@@ -1301,7 +1316,7 @@ p {
     transition: transform 0.5s ease;
 }
 
-.our_projects_card{
+.our_projects_card {
     flex-shrink: 0;
 }
 
@@ -1751,8 +1766,9 @@ p {
 
 .faq_section_content_images img {
     position: absolute;
-    right: 10%;
-    top: 33%;
+    right: -8%;
+    top: 19%;
+
 }
 
 .faq_content {
