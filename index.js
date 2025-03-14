@@ -230,3 +230,98 @@ document.addEventListener('DOMContentLoaded', () => {
         burgerMenu.classList.toggle('active');
     });
 });
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    let cSlide = 0;
+    const prevClick = document.getElementById('prevClick');
+    const nextClick = document.getElementById('nextClick');
+    const slideContent = document.querySelector('.our_projects_cards');
+    const slid = document.querySelectorAll('.our_projects_card');
+    const totalSlid = slid.length;
+
+    if (!slideContent) {
+        console.error('Контейнер с карточками не найден!');
+        return;
+    }
+
+    // Ширина карточки + отступ (gap)
+    const cardWidth = slid[0].offsetWidth + 40; // 40px — это ваш gap из CSS
+
+    // Максимальное смещение (чтобы не выходить за пределы)
+    const maxOffset = -(totalSlid - 1) * cardWidth;
+
+    function changSlidee(direction) {
+        // Обновляем индекс текущего слайда
+        cSlide += direction;
+
+        // Ограничиваем индекс слайда
+        if (cSlide < 0) {
+            cSlide = 0; // Не выходим за пределы первой карточки
+        } else if (cSlide >= totalSlid) {
+            cSlide = 0; // Возвращаемся к первой карточке
+            slideContent.style.transition = 'none'; // Отключаем анимацию для мгновенного перехода
+            slideContent.style.transform = `translateX(0)`;
+            // Включаем анимацию обратно после мгновенного перехода
+            setTimeout(() => {
+                slideContent.style.transition = 'transform 0.5s ease';
+            }, 10);
+            return;
+        }
+
+        // Вычисляем смещение для контейнера
+        const offset = -cSlide * cardWidth;
+        slideContent.style.transform = `translateX(${offset}px)`;
+    }
+
+    if (prevClick && nextClick) {
+        prevClick.addEventListener('click', () => {
+            changSlidee(-1);
+            resetsAutoScroll(); // Сбрасываем автоматическую прокрутку при клике
+        });
+        nextClick.addEventListener('click', () => {
+            changSlidee(1);
+            resetsAutoScroll(); // Сбрасываем автоматическую прокрутку при клике
+        });
+    } else {
+        console.error('Кнопки "назад" или "вперед" не найдены!');
+    }
+});
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const filterLinks = document.querySelectorAll('.our_projects_filter a');
+    const cards = document.querySelectorAll('.our_projects_card');
+
+    // Обработчик клика на кнопки фильтра
+    filterLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault(); // Отменяем стандартное поведение ссылки
+
+            // Убираем активный класс у всех кнопок
+            filterLinks.forEach(link => link.classList.remove('active'));
+
+            // Добавляем активный класс к текущей кнопке
+            link.classList.add('active');
+
+            // Получаем значение фильтра
+            const filter = link.getAttribute('data-filter');
+
+            // Фильтруем карточки
+            cards.forEach(card => {
+                const category = card.getAttribute('data-category');
+
+                if (filter === 'all' || category === filter) {
+                    card.style.display = 'block'; // Показываем карточку
+                } else {
+                    card.style.display = 'none'; // Скрываем карточку
+                }
+            });
+        });
+    });
+
+    // По умолчанию показываем все карточки
+    filterLinks[0].click(); // Имитируем клик на "All projects"
+});
