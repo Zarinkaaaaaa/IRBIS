@@ -160,6 +160,7 @@ p {
     position: relative;
     padding-top: 42px;
 }
+
 .slider {
     position: absolute;
     bottom: 57px;
@@ -174,11 +175,13 @@ p {
 }
 
 .slider_progress {
-    width: 256.884px; /* Начальная ширина прогресса */
+    width: 256.884px;
+    /* Начальная ширина прогресса */
     height: 7px;
     background: white;
     border-radius: 3.5px;
-    transition: width 0.5s ease; /* Плавное изменение ширины */
+    transition: width 0.5s ease;
+    /* Плавное изменение ширины */
 }
 
 .slider_indicators {
@@ -208,22 +211,22 @@ p {
 
 @media (max-width: 767px) {
     .slider {
-        width: 80%; 
-        height: 5px; 
-        bottom: -7px; 
+        width: 80%;
+        height: 5px;
+        bottom: -7px;
     }
 
     .slider_progress {
-        height: 5px; 
+        height: 5px;
     }
 
     .slider_indicators {
-        top: 8px; 
-        gap: 6px; 
+        top: 8px;
+        gap: 6px;
     }
 
     .slider_indicators .indicator {
-        width: 5px; 
+        width: 5px;
         height: 5px;
     }
 }
@@ -1413,24 +1416,25 @@ p {
 .our_projects_filter_link a.active {
     color: #d8ba72;
 }
+
 .our_projects_filter_link .all.active {
     border: 1px solid #d8ba72;
 }
 
 .our_projects_filter_link .fireplaces.active {
-    border: 1px solid #d8ba72; 
+    border: 1px solid #d8ba72;
 }
 
 .our_projects_filter_link .bathrooms.active {
-    border: 1px solid #d8ba72;  
+    border: 1px solid #d8ba72;
 }
 
 .our_projects_filter_link .kitchens.active {
-    border: 1px solid #d8ba72;  
+    border: 1px solid #d8ba72;
 }
 
 .our_projects_filter_link .custom.active {
-    border: 1px solid #d8ba72;  
+    border: 1px solid #d8ba72;
 }
 
 @media (max-width: 430px) {
@@ -1568,21 +1572,51 @@ p {
 
     .our_projects_filter_link a {
         font-size: 16px;
-        /* Уменьшаем размер текста */
         padding: 6px 12px;
-        /* Уменьшаем отступы */
+    }
+
+    .our_projects_filter_link .all {
+        width: 104px;
+        height: 25px;
+        top: 2px;
+        left: 5px;
+    }
+
+    .our_projects_filter_link .fireplaces {
+        width: 98px;
+        height: 25px;
+        top: 2px;
+        left: 5px;
+    }
+
+    .our_projects_filter_link .bathrooms {
+        top: 2px;
+        left: 5px;
+        width: 103px;
+        height: 25px;
+    }
+
+    .our_projects_filter_link .kitchens {
+        top: 2px;
+        left: 5px;
+        width: 87px;
+        height: 25px;
+    }
+
+    .our_projects_filter_link .custom {
+        top: 0px;
+        left: 5px;
+        width: 144px;
+        height: 26px;
     }
 
     .our_projects_cards {
         gap: 15px;
-        /* Уменьшаем отступы */
         margin-top: 20px;
-        /* Уменьшаем отступ */
     }
 
     .our_projects_cards img {
         max-width: 100%;
-        /* Растягиваем на всю ширину */
     }
 }
 
@@ -1950,77 +1984,60 @@ p {
     .faq_section_content {
         display: flex;
         flex-direction: column;
-        /* Элементы в колонку */
         gap: 30px;
-        /* Уменьшаем отступы */
         align-items: center;
-        /* Выравниваем по центру */
+        margin-top: 20px;
     }
 
     .faq_section_faqs {
         gap: 30px;
-        /* Уменьшаем отступы */
         width: 100%;
-        /* Растягиваем на всю ширину */
     }
 
 
     .faq_header::after {
         width: 100%;
-        /* Растягиваем на всю ширину */
         height: 0px;
         bottom: -13px;
-        /* Уменьшаем отступ */
     }
 
     .faq_section_faq .faqs {
         font-weight: 400;
         font-size: 18px;
-        /* Уменьшаем размер текста */
     }
 
     .faq_section_faq .faqs_arrow {
-
         font-size: 24px;
-        /* Уменьшаем размер стрелки */
     }
 
     .faq_section_content_images img {
         display: none;
-        /* Скрываем изображение на мобильных */
     }
 
     .faq_section_faq.active .faq_content {
         max-height: 300px;
-        /* Увеличь это значение, если ответы длинные */
     }
 
     .faq_section_faq .faq_content p {
         font-size: 16px;
-        /* Уменьшаем размер текста */
         padding-top: 10px;
-        /* Уменьшаем отступ */
     }
 
     .faq_section_faq.active .faq_header::after {
         border: 0.5px solid #d8ba72;
         bottom: -60px;
-        /* Уменьшаем отступ */
     }
 
     .faq {
         padding-top: 40px;
-        /* Уменьшаем отступ сверху */
     }
 
     .faq_section {
         gap: 20px;
-        /* Уменьшаем отступы */
     }
 
     .faq_section_title_button button {
         font-size: 18px;
-        /* Уменьшаем размер текста */
         padding: 6px 0px 0px 1px;
     }
 
