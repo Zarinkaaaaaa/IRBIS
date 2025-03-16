@@ -292,3 +292,71 @@ document.addEventListener('DOMContentLoaded', () => {
     
     filterLinks[0].click(); 
 })
+
+document.addEventListener('DOMContentLoaded', function () {
+    // Находим все ссылки
+    const links = document.querySelectorAll('.our_projects_filter_link a');
+
+    // Добавляем обработчик клика для каждой ссылки
+    links.forEach(link => {
+        link.addEventListener('click', function (e) {
+            e.preventDefault(); // Отменяем стандартное поведение ссылки
+
+            // Убираем класс active у всех ссылок и соответствующих div
+            links.forEach(otherLink => {
+                otherLink.classList.remove('active');
+                const otherDiv = otherLink.parentElement.querySelector('div');
+                otherDiv.classList.remove('active');
+            });
+
+            // Добавляем класс active к текущей ссылке и соответствующему div
+            this.classList.add('active');
+            const currentDiv = this.parentElement.querySelector('div');
+            currentDiv.classList.add('active');
+        });
+    });
+});
+
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const headerBanner = document.querySelector('.header_banner');
+    const progress = document.querySelector('.slider_progress');
+    const indicators = document.querySelectorAll('.slider_indicators .indicator');
+
+    const images = [
+        'url(assets/media/banner/banner.png)',
+        'url(assets/media/banner/banner.png)',
+        'url(assets/media/banner/banner.png)'
+    ];
+
+    let currentIndex = 0;
+
+    // Функция для обновления слайдера
+    function updateSlider(index) {
+        // Меняем фоновое изображение
+        headerBanner.style.backgroundImage = images[index];
+
+        // Обновляем полосу прогресса
+        const progressWidth = ((index + 1) / images.length) * 100;
+        progress.style.width = `${progressWidth}%`;
+
+        // Обновляем индикаторы
+        indicators.forEach((indicator, i) => {
+            indicator.classList.toggle('active', i === index);
+        });
+    }
+
+    // Переключение по индикаторам
+    indicators.forEach((indicator, index) => {
+        indicator.addEventListener('click', () => {
+            currentIndex = index;
+            updateSlider(currentIndex);
+        });
+    });
+
+    setInterval(() => {
+        currentIndex = (currentIndex + 1) % images.length;
+        updateSlider(currentIndex);
+    }, 5000); 
+});
