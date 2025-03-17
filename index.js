@@ -455,6 +455,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 document.addEventListener('DOMContentLoaded', function () {
     const headerBanner = document.querySelector('.header_banner');
+    const backgroundZoom = document.querySelector('.background_zoom'); // Новый элемент
     const progress = document.querySelector('.slider_progress');
     const indicators = document.querySelectorAll('.slider_indicators .indicator');
 
@@ -468,8 +469,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Функция для обновления слайдера
     function updateSlider(index) {
-        // Меняем фоновое изображение
-        headerBanner.style.backgroundImage = images[index];
+        // Меняем фоновое изображение через .background_zoom
+        backgroundZoom.style.backgroundImage = images[index];
 
         // Обновляем полосу прогресса
         const progressWidth = ((index + 1) / images.length) * 100;
@@ -489,8 +490,12 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
+    // Автоматическое переключение слайдов
     setInterval(() => {
         currentIndex = (currentIndex + 1) % images.length;
         updateSlider(currentIndex);
-    }, 5000); 
+    }, 5000); // Интервал 5 секунд
+
+    // Инициализация первого слайда
+    updateSlider(currentIndex);
 });
