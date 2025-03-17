@@ -1,29 +1,68 @@
-document.querySelectorAll('.faq_header').forEach(header => {
-    header.addEventListener('click', () => {
-        const faqItem = header.closest('.faq_section_faq');
-        const content = faqItem.querySelector('.faq_content');
-        const arrow = faqItem.querySelector('.faqs_arrow');
+document.addEventListener('DOMContentLoaded', () => {
+    // Открываем второй вопрос по умолчанию
+    const secondFaq = document.querySelectorAll('.faq_section_faq')[1];
+    if (secondFaq) {
+        secondFaq.classList.add('active');
+        const content = secondFaq.querySelector('.faq_content');
+        const arrow = secondFaq.querySelector('.faqs_arrow');
+        content.style.maxHeight = content.scrollHeight + 'px';
+        arrow.style.transform = 'rotate(270deg)';
+    }
 
-        faqItem.classList.toggle('active');
+    // Обработчики для всех вопросов
+    document.querySelectorAll('.faq_header').forEach(header => {
+        header.addEventListener('click', () => {
+            const faqItem = header.closest('.faq_section_faq');
+            const content = faqItem.querySelector('.faq_content');
+            const arrow = faqItem.querySelector('.faqs_arrow');
 
-        if (faqItem.classList.contains('active')) {
-            content.style.maxHeight = content.scrollHeight + 'px';
-            arrow.style.transform = 'rotate(270deg)';
-        } else {
-            content.style.maxHeight = 0;
-            arrow.style.transform = 'rotate(90deg)';
-        }
+            faqItem.classList.toggle('active');
 
-        document.querySelectorAll('.faq_section_faq').forEach(item => {
-            if (item !== faqItem && item.classList.contains('active')) {
-                item.classList.remove('active');
-                item.querySelector('.faq_content').style.maxHeight = 0;
-                item.querySelector('.faqs_arrow').style.transform = 'rotate(90deg)';
+            if (faqItem.classList.contains('active')) {
+                content.style.maxHeight = content.scrollHeight + 'px';
+                arrow.style.transform = 'rotate(270deg)';
+            } else {
+                content.style.maxHeight = 0;
+                arrow.style.transform = 'rotate(90deg)';
             }
+
+            // Закрываем другие вопросы
+            document.querySelectorAll('.faq_section_faq').forEach(item => {
+                if (item !== faqItem && item.classList.contains('active')) {
+                    item.classList.remove('active');
+                    item.querySelector('.faq_content').style.maxHeight = 0;
+                    item.querySelector('.faqs_arrow').style.transform = 'rotate(90deg)';
+                }
+            });
         });
     });
 });
 
+document.addEventListener('DOMContentLoaded', () => {
+    const faqSection = document.querySelector('.faq_section_faqs');
+
+    // Создаем наблюдатель
+    const observer = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    // Добавляем класс для анимации
+                    entry.target.classList.add('animate-fadeInUp');
+                    // Останавливаем наблюдение после появления
+                    observer.unobserve(entry.target);
+                }
+            });
+        },
+        {
+            threshold: 0.2, // Анимация начнется, когда 20% блока будет видно
+        }
+    );
+
+    // Начинаем наблюдение за текстовым контентом
+    if (faqSection) {
+        observer.observe(faqSection);
+    }
+});
 
 
 
@@ -40,48 +79,54 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    const cardWidth = slides[0].offsetWidth + 27; 
+    const cardWidth = slides[0].offsetWidth + 27; // Ширина карточки + отступ
 
     function changeSlide(direction) {
-        
+        // Обновляем currentSlide с учетом зацикливания
         currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
 
+        // Перемещаем контейнер с карточками
         const offset = -currentSlide * cardWidth;
         slidesContainer.style.transform = `translateX(${offset}px)`;
     }
 
+    // Обработчики для кнопок "назад" и "вперед"
     if (prevButton && nextButton) {
         prevButton.addEventListener('click', () => {
             changeSlide(-1);
-            resetAutoScroll(); 
+            resetAutoScroll();
         });
         nextButton.addEventListener('click', () => {
             changeSlide(1);
-            resetAutoScroll(); 
+            resetAutoScroll();
         });
     } else {
         console.error('Кнопки "назад" или "вперед" не найдены!');
     }
 
+    // Автоматическая прокрутка
     let autoScrollInterval;
 
     function startAutoScroll() {
         autoScrollInterval = setInterval(() => {
-            changeSlide(1); 
-        }, 5000); 
+            changeSlide(1); // Переход к следующему слайду
+        }, 5000); // Интервал 5 секунд
     }
 
     function resetAutoScroll() {
-        clearInterval(autoScrollInterval); 
-        startAutoScroll(); 
+        clearInterval(autoScrollInterval); // Сбрасываем интервал
+        startAutoScroll(); // Запускаем заново
     }
 
+    // Запускаем автоматическую прокрутку
     startAutoScroll();
 
+    // Останавливаем автоматическую прокрутку при наведении мыши
     slidesContainer.addEventListener('mouseenter', () => {
         clearInterval(autoScrollInterval);
     });
 
+    // Возобновляем автоматическую прокрутку, когда мышь убирают
     slidesContainer.addEventListener('mouseleave', () => {
         startAutoScroll();
     });
@@ -91,63 +136,89 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 document.addEventListener('DOMContentLoaded', () => {
-    let curntSlide = 0;
+    let currentSlide = 0;
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
     const slideContainer = document.querySelector('.our_partners_section_container');
-    const slide = document.querySelectorAll('.our_partners_section_card');
-    const totalSlide = slide.length;
+    const slides = document.querySelectorAll('.our_partners_section_card');
+    const totalSlides = slides.length / 2; // Учитываем дублированные слайды
 
     if (!slideContainer) {
         console.error('Контейнер с карточками не найден!');
         return;
     }
 
-    const cardWidths = slide[0].offsetWidth + 27;
+    const cardWidth = slides[0].offsetWidth + 27; // Ширина карточки + отступ
 
-    function changSlide(direction) {
-        
-        curntSlide = (curntSlide + direction + totalSlide) % totalSlide;
-        const offset = -curntSlide * cardWidths;
+    function changeSlide(direction) {
+        // Обновляем currentSlide
+        currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
+
+        // Перемещаем контейнер с карточками
+        const offset = -currentSlide * cardWidth;
+        slideContainer.style.transition = 'transform 0.5s ease'; // Плавный переход
         slideContainer.style.transform = `translateX(${offset}px)`;
+
+        // Если достигли конца дублированных слайдов, переходим к началу без анимации
+        if (currentSlide === totalSlides - 1 && direction === 1) {
+            setTimeout(() => {
+                slideContainer.style.transition = 'none'; // Отключаем анимацию
+                slideContainer.style.transform = `translateX(0)`;
+                currentSlide = 0;
+            }, 500); // Ждем завершения анимации
+        }
+
+        // Если достигли начала дублированных слайдов, переходим к концу без анимации
+        if (currentSlide === 0 && direction === -1) {
+            setTimeout(() => {
+                slideContainer.style.transition = 'none'; // Отключаем анимацию
+                slideContainer.style.transform = `translateX(${-(totalSlides - 1) * cardWidth}px)`;
+                currentSlide = totalSlides - 1;
+            }, 500); // Ждем завершения анимации
+        }
     }
 
+    // Обработчики для кнопок "назад" и "вперед"
     if (prevBtn && nextBtn) {
         prevBtn.addEventListener('click', () => {
-            changSlide(-1);
-            resetAutoScroll(); 
+            changeSlide(-1);
+            resetAutoScroll();
         });
         nextBtn.addEventListener('click', () => {
-            changSlide(1);
-            resetAutoScroll(); 
+            changeSlide(1);
+            resetAutoScroll();
         });
     } else {
         console.error('Кнопки "назад" или "вперед" не найдены!');
     }
 
-   
+    // Автоматическая прокрутка
     let autoScrollInterval;
 
     function startAutoScroll() {
         autoScrollInterval = setInterval(() => {
-            changSlide(1); 
-        }, 5000); 
-    }
-    function resetAutoScroll() {
-        clearInterval(autoScrollInterval); 
-        startAutoScroll(); 
+            changeSlide(1); // Переход к следующему слайду
+        }, 5000); // Интервал 5 секунд
     }
 
+    function resetAutoScroll() {
+        clearInterval(autoScrollInterval); // Сбрасываем интервал
+        startAutoScroll(); // Запускаем заново
+    }
+
+    // Запускаем автоматическую прокрутку
     startAutoScroll();
+
+    // Останавливаем автоматическую прокрутку при наведении мыши
     slideContainer.addEventListener('mouseenter', () => {
         clearInterval(autoScrollInterval);
     });
 
+    // Возобновляем автоматическую прокрутку, когда мышь убирают
     slideContainer.addEventListener('mouseleave', () => {
         startAutoScroll();
     });
 });
-
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -207,6 +278,32 @@ document.addEventListener('DOMContentLoaded', () => {
 })
 
 
+document.addEventListener('DOMContentLoaded', () => {
+    const projectsSection = document.querySelector('.our_projects_animation');
+
+    // Создаем наблюдатель
+    const observer = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    // Добавляем класс для анимации
+                    entry.target.classList.add('animate-fadeInUp');
+                    // Останавливаем наблюдение после появления
+                    observer.unobserve(entry.target);
+                }
+            });
+        },
+        {
+            threshold: 0.2, // Анимация начнется, когда 20% блока будет видно
+        }
+    );
+
+    // Начинаем наблюдение за блоком
+    if (projectsSection) {
+        observer.observe(projectsSection);
+    }
+});
+
 
 document.addEventListener('DOMContentLoaded', () => {
     let cSlide = 0;
@@ -221,21 +318,27 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    const cardWidth = slid[0].offsetWidth + 40;
-
-    const maxOffset = -(totalSlid - 1) * cardWidth;
+    const cardWidth = slid[0].offsetWidth + 40; // Ширина карточки + отступ
 
     function changSlidee(direction) {
         cSlide += direction;
 
+        // Зацикливание слайдов
         if (cSlide < 0) {
-            cSlide = 0;
+            cSlide = totalSlid - 1; // Переход к последнему слайду
+            slideContent.style.transition = 'none'; // Отключаем анимацию
+            slideContent.style.transform = `translateX(${-(totalSlid - 1) * cardWidth}px)`;
+            setTimeout(() => {
+                slideContent.style.transition = 'transform 0.2s ease'; // Включаем анимацию
+                cSlide = totalSlid - 1;
+            }, 10);
         } else if (cSlide >= totalSlid) {
-            cSlide = 0; 
-            slideContent.style.transition = 'none'; 
+            cSlide = 0; // Переход к первому слайду
+            slideContent.style.transition = 'none'; // Отключаем анимацию
             slideContent.style.transform = `translateX(0)`;
             setTimeout(() => {
-                slideContent.style.transition = 'transform 0.5s ease';
+                slideContent.style.transition = 'transform 0.2s ease'; // Включаем анимацию
+                cSlide = 0;
             }, 10);
             return;
         }
@@ -244,17 +347,48 @@ document.addEventListener('DOMContentLoaded', () => {
         slideContent.style.transform = `translateX(${offset}px)`;
     }
 
+    // Обработчики для кнопок "назад" и "вперед"
     if (prevClick && nextClick) {
         prevClick.addEventListener('click', () => {
             changSlidee(-1);
+            resetAutoScroll();
         });
         nextClick.addEventListener('click', () => {
             changSlidee(1);
+            resetAutoScroll();
         });
     } else {
         console.error('Кнопки "назад" или "вперед" не найдены!');
     }
-})
+
+    // Автоматическая прокрутка
+    let autoScrollInterval;
+
+    function startAutoScroll() {
+        autoScrollInterval = setInterval(() => {
+            changSlidee(1); // Переход к следующему слайду
+        }, 3000); // Интервал 5 секунд
+    }
+
+    function resetAutoScroll() {
+        clearInterval(autoScrollInterval); // Сбрасываем интервал
+        startAutoScroll(); // Запускаем заново
+    }
+
+    // Запускаем автоматическую прокрутку
+    startAutoScroll();
+
+    // Останавливаем автоматическую прокрутку при наведении мыши
+    slideContent.addEventListener('mouseenter', () => {
+        clearInterval(autoScrollInterval);
+    });
+
+    // Возобновляем автоматическую прокрутку, когда мышь убирают
+    slideContent.addEventListener('mouseleave', () => {
+        startAutoScroll();
+    });
+});
+
 
 
 

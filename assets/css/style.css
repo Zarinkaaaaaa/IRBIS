@@ -704,12 +704,12 @@ p {
     display: flex;
     position: relative;
     height: 865px;
+    overflow: hidden; /* Скрываем части изображения, которые выходят за пределы блока */
 }
 
 .gallery_section {
     display: flex;
-    justify-content: flex-end;
-    /* Прижимаем содержимое к правому краю */
+    justify-content: flex-end; /* Прижимаем содержимое к правому краю */
 }
 
 .gallery_section_text {
@@ -730,33 +730,24 @@ p {
 
 .gallery_image img {
     transition: transform 0.5s ease;
-    max-width: 100%;
-    /* Ограничиваем ширину изображения */
-    height: auto;
-    /* Сохраняем пропорции */
-    transform-origin: center;
-    /* Увеличение от центра */
+    max-width: 100%; /* Ограничиваем ширину изображения */
+    height: auto; /* Сохраняем пропорции */
+    transform-origin: center; /* Увеличение от центра */
 }
 
 .gallery_image:hover img {
-    animation: pulse 1.5s infinite;
-    /* Анимация при наведении */
+    animation: pulse 1.5s infinite; /* Анимация при наведении */
 }
 
 @keyframes pulse {
     0% {
-        transform: scale(1);
-        /* Исходный размер */
+        transform: scale(1); /* Исходный размер */
     }
-
     50% {
-        transform: scale(1.03);
-        /* Увеличение на 3% */
+        transform: scale(1.03); /* Увеличение на 3% */
     }
-
     100% {
-        transform: scale(1);
-        /* Возврат к исходному размеру */
+        transform: scale(1); /* Возврат к исходному размеру */
     }
 }
 
@@ -786,7 +777,61 @@ p {
     right: -3%;
 }
 
-@media screen and (max-width:1550px) {
+/* Медиа-запросы для адаптации */
+@media screen and (max-width: 1850px) {
+    .gallery {
+        height: 680px; /* Уменьшаем высоту блока */
+    }
+
+    .gallery_image {
+        width: 50%; /* Ограничиваем ширину изображения */
+    }
+
+    .gallery_section_text {
+        padding-top: 61px; /* Уменьшаем отступ сверху */
+    }
+}
+
+@media screen and (max-width: 1440px) {
+    .gallery_image {
+        width: 40%; /* Уменьшаем ширину изображения */
+    }
+
+    .gallery_section_text {
+        width: 500px; /* Уменьшаем ширину текстового блока */
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .gallery_image {
+        width: 30%; /* Уменьшаем ширину изображения */
+    }
+
+    .gallery_section_text {
+        width: 400px; /* Уменьшаем ширину текстового блока */
+        padding-top: 40px; /* Уменьшаем отступ сверху */
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .gallery_image {
+        width: 100%; /* Изображение занимает всю ширину */
+        position: static; /* Убираем абсолютное позиционирование */
+    }
+
+    .gallery_section_text {
+        width: 100%; /* Текстовый блок занимает всю ширину */
+        padding-top: 20px; /* Уменьшаем отступ сверху */
+        text-align: center; /* Выравниваем текст по центру */
+        align-items: center; /* Выравниваем элементы по центру */
+    }
+
+    .gallery {
+        height: auto; /* Высота блока автоматически подстраивается под контент */
+        flex-direction: column; /* Меняем направление flex на вертикальное */
+    }
+}
+@media screen and (max-width:1850px) {
     .call_us {
         height: 672px;
     }
@@ -799,7 +844,7 @@ p {
         padding-top: 143px;
     }
 
-    .gallery_image {
+    /* .gallery_image {
         width: 50%;
     }
 
@@ -809,7 +854,7 @@ p {
 
     .gallery_section_text {
         padding-top: 61px;
-    }
+    } */
 }
 
 @media (max-width: 430px) {
@@ -1397,6 +1442,7 @@ p {
     overflow: hidden;
     /* Скрываем карточки, которые выходят за пределы */
     position: relative;
+    max-width: 1600px;
 }
 
 .our_projects_cards {
@@ -1435,6 +1481,28 @@ p {
 
 .our_projects_filter_link .custom.active {
     border: 1px solid #d8ba72;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px); /* Сдвигаем блок вниз */
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0); /* Возвращаем блок на место */
+    }
+}
+
+/* Класс для анимации */
+.animate-fadeInUp {
+    animation: fadeInUp 1s ease-out forwards;
+}
+
+/* Изначально скрываем блок */
+.our_projects_animation {
+    opacity: 0;
+    transform: translateY(50px);
 }
 
 @media (max-width: 430px) {
@@ -1954,6 +2022,61 @@ p {
     cursor: pointer;
 }
 
+.faq_section_faq.active .faq_content {
+    max-height: 300px; /* Увеличь это значение, если ответы длинные */
+}
+
+.faq_section_faq.active .faqs_arrow {
+    transform: rotate(270deg); /* Стрелка поворачивается вниз */
+    color: #d8ba72; /* Цвет стрелки */
+}
+
+.faq_section_faq.active .faqs {
+    color: #d8ba72; /* Цвет текста вопроса */
+}
+
+.faq_section_faq.active .faq_header::after {
+    border: 0.5px solid #d8ba72; /* Цвет линии под вопросом */
+    bottom: -360%; /* Позиция линии */
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px); /* Сдвигаем блок вниз */
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0); /* Возвращаем блок на место */
+    }
+}
+
+/* Класс для анимации */
+.animate-fadeInUp {
+    animation: fadeInUp 1s ease-out forwards;
+}
+
+/* Изначально скрываем текстовый контент */
+.faq_section_faqs {
+    opacity: 0;
+    transform: translateY(50px);
+}
+
+/* Стили для изображения */
+.faq_section_content_images img {
+    position: absolute;
+    right: 11%;
+    top: 31%;
+    opacity: 1; /* Убедимся, что изображение видимо */
+    transform: translateY(0); /* Убедимся, что изображение не сдвинуто */
+}
+
+/* Применяем анимацию только к текстовому контенту */
+.faq_section_faqs.animate-fadeInUp {
+    opacity: 1;
+    transform: translateY(0);
+}
+
 @media (max-width:430px) {
     .faq_section_content_images {
         display: none;
@@ -2110,14 +2233,28 @@ p {
     font-family: 'helvetica';
 }
 
-@media (max-width:430px) {
+@media (max-width: 430px) {
     .service {
         padding: 145px 0px 70px 0px;
     }
 
     .service_section_blocks {
-        flex-wrap: wrap;
-        gap: 20px;
+        flex-wrap: wrap; /* Перенос блоков на новую строку */
+        gap: 20px; /* Расстояние между блоками */
+    }
+
+    .service_section_block {
+        width: 45%; /* Устанавливаем одинаковую ширину для блоков */
+        gap: 16px; /* Уменьшаем расстояние между элементами */
+    }
+
+    .service_section_block_part {
+        gap: 8px; /* Уменьшаем расстояние между иконкой и текстом */
+    }
+
+    .service_section_block_part p {
+        font-size: 16px; /* Уменьшаем размер текста */
+        text-align: left; /* Выравниваем текст по левому краю */
     }
 }
 
