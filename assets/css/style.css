@@ -1453,9 +1453,9 @@ p {
 .our_projects_cards_container {
     width: 100%;
     overflow: hidden;
-    /* Скрываем карточки, которые выходят за пределы */
     position: relative;
     max-width: 1600px;
+    height: 500px;
 }
 
 .our_projects_cards {
@@ -1469,6 +1469,7 @@ p {
 
 .our_projects_card {
     flex-shrink: 0;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
 
@@ -1808,10 +1809,8 @@ p {
     gap: 27px;
     align-items: center;
     overflow: hidden;
-    /* Скрываем карточки, которые выходят за пределы контейнера */
     width: 100%;
     position: relative;
-    /* Для позиционирования контейнера с карточками */
 }
 
 .reviews_section_slider_cards_container {
@@ -1819,19 +1818,19 @@ p {
     flex-direction: row;
     gap: 27px;
     transition: transform 0.5s ease;
-    /* Плавный переход */
 }
 
 .reviews_section_slider_card {
     width: 634px;
-    height: 318px;
+    height: auto; /* Автоматическая высота для адаптации под контент */
     background: #2a2b2c;
     display: flex;
     flex-direction: column;
     gap: 10px;
-    padding: 25px 36px 0px 25px;
+    padding: 25px 36px 25px 25px; /* Увеличим padding снизу для кнопки */
     flex-shrink: 0;
-    /* Запрещаем карточкам сжиматься */
+    border-radius: 8px; /* Добавим скругление углов */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Тень для карточки */
 }
 
 .reviews_section_slider_card .reviews_content {
@@ -1840,7 +1839,29 @@ p {
     line-height: 115%;
     color: #fff;
     font-family: 'helvetica';
-    width: 568px;
+    width: 100%; /* Ширина 100% для адаптивности */
+    display: block;
+    transition: opacity 0.3s ease, max-height 0.3s ease;
+    overflow: hidden;
+    max-height: 156px; /* Ограничиваем высоту короткого текста */
+}
+
+.reviews_content_full {
+    display: none;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 115%;
+    color: #fff;
+    font-family: 'helvetica';
+    width: 100%;
+    transition: opacity 0.3s ease, max-height 0.3s ease;
+    max-height: 0;
+    overflow: hidden;
+}
+
+.reviews_content_full.visible {
+    display: block;
+    max-height: 500px; /* Максимальная высота для плавного раскрытия */
 }
 
 .reviews_section_slider_card_title {
@@ -1887,15 +1908,30 @@ p {
     text-align: justify;
     color: #d8ba72;
     cursor: pointer;
+    margin-top: 10px; /* Отступ для кнопки */
+    align-self: flex-start; /* Выравниваем кнопку по левому краю */
 }
 
-@media (max-width:430px) {
+.reviews_section_slider_card button:hover {
+    color: #c0a05a; /* Изменение цвета при наведении */
+}
+
+@media (max-width: 430px) {
     .our_partners_section_title {
         flex-direction: column;
         align-items: flex-start;
         gap: 10px;
     }
 
+    .reviews_section_slider_card {
+        width: 330px; /* Адаптивная ширина для мобильных устройств */
+        padding: 15px; /* Уменьшим padding для мобильных */
+    }
+
+    .reviews_section_slider_card .reviews_content,
+    .reviews_content_full {
+        font-size: 18px; /* Уменьшим размер шрифта для мобильных */
+    }
 }
 
 /*OUR_REVIEWS*/
@@ -2195,7 +2231,7 @@ p {
 
 }
 
-@media screen and (max-width:1550px) {
+@media screen and (max-width:1850px) {
     .faq_section_content_images img {
         position: absolute;
         right: 3%;
@@ -2344,6 +2380,14 @@ p {
     position: absolute;
     right: 0;
     top: -20%;
+    z-index: 0;
+}
+
+.contacts_section_icon{
+    z-index: 100;
+}
+.contacts_section_icon a{
+    margin: 0;
 }
 
 .contacts_section_content {

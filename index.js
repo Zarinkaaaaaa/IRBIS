@@ -79,7 +79,9 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    const cardWidth = slides[0].offsetWidth + 27; // Ширина карточки + отступ
+    // Ширина карточки + отступ (gap)
+    const cardWidth = slides[0].offsetWidth + parseInt(window.getComputedStyle(slidesContainer).gap);
+    console.log('Ширина карточки + отступ:', cardWidth);
 
     function changeSlide(direction) {
         // Обновляем currentSlide с учетом зацикливания
@@ -88,6 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Перемещаем контейнер с карточками
         const offset = -currentSlide * cardWidth;
         slidesContainer.style.transform = `translateX(${offset}px)`;
+        console.log('Текущий слайд:', currentSlide, 'Смещение:', offset);
     }
 
     // Обработчики для кнопок "назад" и "вперед"
@@ -396,18 +399,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const filterLinks = document.querySelectorAll('.our_projects_filter a');
     const cards = document.querySelectorAll('.our_projects_card');
 
-    
     filterLinks.forEach(link => {
         link.addEventListener('click', (e) => {
             e.preventDefault(); 
 
-            
+            // Убираем активный класс у всех ссылок
             filterLinks.forEach(link => link.classList.remove('active'));
 
-          
+            // Добавляем активный класс к текущей ссылке
             link.classList.add('active');
 
-           
+            // Получаем значение фильтра
             const filter = link.getAttribute('data-filter');
 
             // Фильтруем карточки
@@ -415,17 +417,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 const category = card.getAttribute('data-category');
 
                 if (filter === 'all' || category === filter) {
-                    card.style.display = 'block'; // Показываем карточку
+                    card.style.visibility = 'visible'; // Показываем карточку
+                    card.style.opacity = '1';
                 } else {
-                    card.style.display = 'none'; // Скрываем карточку
+                    card.style.visibility = 'hidden'; // Скрываем карточку
+                    card.style.opacity = '0';
                 }
             });
         });
     });
 
-    
+    // Активируем первую ссылку по умолчанию
     filterLinks[0].click(); 
-})
+});
 
 document.addEventListener('DOMContentLoaded', function () {
     // Находим все ссылки
@@ -498,4 +502,32 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Инициализация первого слайда
     updateSlider(currentIndex);
+});
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const seeMoreButtons = document.querySelectorAll('.see_more_btn');
+
+    seeMoreButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const card = button.closest('.reviews_section_slider_card');
+            const shortText = card.querySelector('.reviews_content');
+            const fullText = card.querySelector('.reviews_content_full');
+
+            if (fullText.classList.contains('visible')) {
+                
+                fullText.style.maxHeight = '0';
+                fullText.classList.remove('visible');
+                shortText.style.display = 'block';
+                button.textContent = 'see more';
+            } else {
+               
+                fullText.style.display = 'block';
+                fullText.style.maxHeight = fullText.scrollHeight + 'px'; // Плавное раскрытие
+                fullText.classList.add('visible');
+                shortText.style.display = 'none';
+                button.textContent = 'see less';
+            }
+        });
+    });
 });
