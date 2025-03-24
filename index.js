@@ -517,7 +517,7 @@ document.addEventListener('DOMContentLoaded', function() {
             zoomInterval = setInterval(() => {
                 backgroundZoom.style.transform = isZoomed ? 'scale(1.05)' : 'scale(1)';
                 isZoomed = !isZoomed;
-            }, 1000); // Смена каждые 5 секунд
+            }, 2000); // Смена каждые 5 секунд
         }
     }
 
