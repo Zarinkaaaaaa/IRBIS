@@ -477,7 +477,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const backgroundZoom = document.querySelector('.background_zoom');
     const progress = document.querySelector('.slider_progress');
     const indicators = document.querySelectorAll('.slider_indicators .indicator');
-    const sliderTrack = document.querySelector('.slider'); // Добавляем обработчик на трек слайдера
+    const sliderTrack = document.querySelector('.slider');
 
     const images = [
         'url(assets/media/banner/banner.png)',
@@ -488,9 +488,9 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentIndex = 0;
     let isDragging = false;
     let startPosX = 0;
-    let currentTranslate = 0;
-    let prevTranslate = 0;
     let autoScrollInterval;
+    let zoomInterval;
+    let isHovered = false;
 
     // Функция для обновления слайдера
     function updateSlider(index) {
@@ -502,6 +502,23 @@ document.addEventListener('DOMContentLoaded', function() {
         indicators.forEach((indicator, i) => {
             indicator.classList.toggle('active', i === currentIndex);
         });
+        
+        // Запускаем анимацию приближения для нового слайда
+        triggerZoomAnimation();
+    }
+
+    // Автоматическое приближение/отдаление
+    function triggerZoomAnimation() {
+        clearInterval(zoomInterval);
+        
+        if (!isHovered) {
+            let isZoomed = false;
+            
+            zoomInterval = setInterval(() => {
+                backgroundZoom.style.transform = isZoomed ? 'scale(1.05)' : 'scale(1)';
+                isZoomed = !isZoomed;
+            }, 1000); // Смена каждые 5 секунд
+        }
     }
 
     // Обработчики для перетаскивания
@@ -518,6 +535,7 @@ document.addEventListener('DOMContentLoaded', function() {
         isDragging = true;
         startPosX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
         clearInterval(autoScrollInterval);
+        clearInterval(zoomInterval);
     }
 
     function drag(e) {
@@ -527,7 +545,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const currentPosition = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
         const diff = currentPosition - startPosX;
         
-        // Определяем направление и переключаем слайд при достаточном перемещении
         if (Math.abs(diff) > 50) {
             updateSlider(diff > 0 ? currentIndex - 1 : currentIndex + 1);
             startPosX = currentPosition;
@@ -537,18 +554,36 @@ document.addEventListener('DOMContentLoaded', function() {
     function dragEnd() {
         isDragging = false;
         startAutoScroll();
+        if (!isHovered) triggerZoomAnimation();
     }
+
+    // Обработчики наведения мыши
+    headerBanner.addEventListener('mouseenter', () => {
+        isHovered = true;
+        clearInterval(zoomInterval);
+        backgroundZoom.style.transform = 'scale(1.05)';
+        clearInterval(autoScrollInterval);
+    });
+
+    headerBanner.addEventListener('mouseleave', () => {
+        isHovered = false;
+        backgroundZoom.style.transform = 'scale(1)';
+        triggerZoomAnimation();
+        startAutoScroll();
+    });
 
     // Переключение по индикаторам
     indicators.forEach((indicator, index) => {
         indicator.addEventListener('click', () => {
             clearInterval(autoScrollInterval);
+            clearInterval(zoomInterval);
             updateSlider(index);
             startAutoScroll();
+            if (!isHovered) triggerZoomAnimation();
         });
     });
 
-    // Автоматическое переключение
+    // Автоматическое переключение слайдов
     function startAutoScroll() {
         clearInterval(autoScrollInterval);
         autoScrollInterval = setInterval(() => {
@@ -559,13 +594,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Инициализация
     updateSlider(currentIndex);
     startAutoScroll();
-    
-    // Пауза при наведении
-    headerBanner.addEventListener('mouseenter', () => {
-        clearInterval(autoScrollInterval);
-    });
-    
-    headerBanner.addEventListener('mouseleave', startAutoScroll);
+    triggerZoomAnimation();
 });
 
 

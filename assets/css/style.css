@@ -167,12 +167,14 @@ p {
     height: 100%;
     background: url(../media/banner/banner.png) center/cover;
     transition: transform 0.5s ease; /* Плавное изменение масштаба */
-    z-index: -1; /* Убедитесь, что фон находится под другими элементами */
+    z-index: -1;
+    will-change: transform; /* Убедитесь, что фон находится под другими элементами */
 }
 
 .header_banner:hover .background_zoom {
-    transform: scale(1.05); /* Увеличиваем фон на 10% */
+    transform: scale(1.05) !important; /* Приоритет при ручном наведении */
 }
+
 
 .slider {
     position: absolute;
