@@ -2089,6 +2089,10 @@ p {
     bottom: -360%; /* Позиция линии */
 }
 
+.big_faq.active .faq_header::after{
+    bottom:-195px;
+}
+
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -2200,6 +2204,9 @@ p {
         bottom: -67px;
     }
 
+    .big_faq.active .faq_header::after{
+        bottom:-160px;
+    }
     .faq {
         padding-top: 40px;
     }
