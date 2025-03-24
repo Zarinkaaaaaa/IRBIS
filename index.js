@@ -229,10 +229,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const headerContainer = document.querySelector('.header_container');
 
     function handleScroll() {
-        if (window.scrollY > 50) { 
-            header.classList.add('scrolled'); 
+        if (window.scrollY > 50) {
+            header.classList.add('scrolled');
         } else {
-            header.classList.remove('scrolled'); 
+            header.classList.remove('scrolled');
         }
     }
 
@@ -308,88 +308,103 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
+
+
+
 document.addEventListener('DOMContentLoaded', () => {
-    let cSlide = 0;
-    const prevClick = document.getElementById('prevClick');
-    const nextClick = document.getElementById('nextClick');
-    const slideContent = document.querySelector('.our_projects_cards');
-    const slid = document.querySelectorAll('.our_projects_card');
-    const totalSlid = slid.length;
+    // Ждем загрузки всех изображений
+    const images = Array.from(document.querySelectorAll('.our_projects_card img'));
+    const imagePromises = images.map(img => {
+        return img.complete ? Promise.resolve() : new Promise(resolve => {
+            img.addEventListener('load', resolve);
+            img.addEventListener('error', resolve);
+        });
+    });
 
-    if (!slideContent) {
-        console.error('Контейнер с карточками не найден!');
-        return;
-    }
+    Promise.all(imagePromises).then(initSlider);
 
-    const cardWidth = slid[0].offsetWidth + 40; // Ширина карточки + отступ
+    function initSlider() {
+        let currentSlide = 0;
+        const prevButton = document.getElementById('prevClick');
+        const nextButton = document.getElementById('nextClick');
+        const slidesContainer = document.querySelector('.our_projects_cards');
+        const slides = document.querySelectorAll('.our_projects_card');
+        const totalSlides = slides.length;
 
-    function changSlidee(direction) {
-        cSlide += direction;
+        if (!slidesContainer || slides.length === 0) return;
 
-        // Зацикливание слайдов
-        if (cSlide < 0) {
-            cSlide = totalSlid - 1; // Переход к последнему слайду
-            slideContent.style.transition = 'none'; // Отключаем анимацию
-            slideContent.style.transform = `translateX(${-(totalSlid - 1) * cardWidth}px)`;
-            setTimeout(() => {
-                slideContent.style.transition = 'transform 0.2s ease'; // Включаем анимацию
-                cSlide = totalSlid - 1;
-            }, 10);
-        } else if (cSlide >= totalSlid) {
-            cSlide = 0; // Переход к первому слайду
-            slideContent.style.transition = 'none'; // Отключаем анимацию
-            slideContent.style.transform = `translateX(0)`;
-            setTimeout(() => {
-                slideContent.style.transition = 'transform 0.2s ease'; // Включаем анимацию
-                cSlide = 0;
-            }, 10);
-            return;
+        // Расчет ширины с учетом всех отступов
+        let cardWidth;
+        function calculateCardWidth() {
+            const slide = slides[0];
+            const style = window.getComputedStyle(slide);
+            cardWidth = slide.offsetWidth + 
+                       parseInt(style.marginLeft) + 
+                       parseInt(style.marginRight) +
+                       parseInt(window.getComputedStyle(slidesContainer).gap);
         }
 
-        const offset = -cSlide * cardWidth;
-        slideContent.style.transform = `translateX(${offset}px)`;
-    }
+        calculateCardWidth();
+        window.addEventListener('resize', calculateCardWidth);
 
-    // Обработчики для кнопок "назад" и "вперед"
-    if (prevClick && nextClick) {
-        prevClick.addEventListener('click', () => {
-            changSlidee(-1);
+        // Плавное переключение с requestAnimationFrame
+        function smoothChangeSlide(direction) {
+            currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
+            const offset = -currentSlide * cardWidth;
+            
+            // Анимация с двойным requestAnimationFrame
+            requestAnimationFrame(() => {
+                slidesContainer.style.transition = 'transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+                slidesContainer.style.transform = `translateX(${offset}px)`;
+            });
+        }
+
+        // Обработчики с debounce
+        let isAnimating = false;
+        function handleNavigation(direction) {
+            if (isAnimating) return;
+            isAnimating = true;
+            
+            smoothChangeSlide(direction);
             resetAutoScroll();
-        });
-        nextClick.addEventListener('click', () => {
-            changSlidee(1);
-            resetAutoScroll();
-        });
-    } else {
-        console.error('Кнопки "назад" или "вперед" не найдены!');
-    }
+            
+            setTimeout(() => {
+                isAnimating = false;
+            }, 700); // Соответствует длительности анимации
+        }
 
-    // Автоматическая прокрутка
-    let autoScrollInterval;
+        if (prevButton && nextButton) {
+            prevButton.addEventListener('click', () => handleNavigation(-1));
+            nextButton.addEventListener('click', () => handleNavigation(1));
+        }
 
-    function startAutoScroll() {
-        autoScrollInterval = setInterval(() => {
-            changSlidee(1); // Переход к следующему слайду
-        }, 3000); // Интервал 5 секунд
-    }
+        // Автопрокрутка
+        let autoScrollInterval;
+        function startAutoScroll() {
+            autoScrollInterval = setInterval(() => {
+                handleNavigation(1);
+            }, 5000);
+        }
+        
+        function resetAutoScroll() {
+            clearInterval(autoScrollInterval);
+            startAutoScroll();
+        }
 
-    function resetAutoScroll() {
-        clearInterval(autoScrollInterval); // Сбрасываем интервал
-        startAutoScroll(); // Запускаем заново
-    }
+        // Управление автопрокруткой
+        slidesContainer.addEventListener('mouseenter', () => clearInterval(autoScrollInterval));
+        slidesContainer.addEventListener('mouseleave', startAutoScroll);
 
-    // Запускаем автоматическую прокрутку
-    startAutoScroll();
-
-    // Останавливаем автоматическую прокрутку при наведении мыши
-    slideContent.addEventListener('mouseenter', () => {
-        clearInterval(autoScrollInterval);
-    });
-
-    // Возобновляем автоматическую прокрутку, когда мышь убирают
-    slideContent.addEventListener('mouseleave', () => {
+        // Инициализация
         startAutoScroll();
-    });
+        slidesContainer.style.transition = 'none';
+        slidesContainer.style.transform = 'translateX(0)';
+        
+        // Принудительное обновление после небольшой задержки
+        setTimeout(() => {
+            slidesContainer.style.transition = 'transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+        }, 50);
+    }
 });
 
 
@@ -401,7 +416,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     filterLinks.forEach(link => {
         link.addEventListener('click', (e) => {
-            e.preventDefault(); 
+            e.preventDefault();
 
             // Убираем активный класс у всех ссылок
             filterLinks.forEach(link => link.classList.remove('active'));
@@ -428,7 +443,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Активируем первую ссылку по умолчанию
-    filterLinks[0].click(); 
+    filterLinks[0].click();
 });
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -457,11 +472,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function() {
     const headerBanner = document.querySelector('.header_banner');
-    const backgroundZoom = document.querySelector('.background_zoom'); // Новый элемент
+    const backgroundZoom = document.querySelector('.background_zoom');
     const progress = document.querySelector('.slider_progress');
     const indicators = document.querySelectorAll('.slider_indicators .indicator');
+    const sliderTrack = document.querySelector('.slider'); // Добавляем обработчик на трек слайдера
 
     const images = [
         'url(assets/media/banner/banner.png)',
@@ -470,38 +486,86 @@ document.addEventListener('DOMContentLoaded', function () {
     ];
 
     let currentIndex = 0;
+    let isDragging = false;
+    let startPosX = 0;
+    let currentTranslate = 0;
+    let prevTranslate = 0;
+    let autoScrollInterval;
 
     // Функция для обновления слайдера
     function updateSlider(index) {
-        // Меняем фоновое изображение через .background_zoom
-        backgroundZoom.style.backgroundImage = images[index];
-
-        // Обновляем полосу прогресса
-        const progressWidth = ((index + 1) / images.length) * 100;
-        progress.style.width = `${progressWidth}%`;
-
-        // Обновляем индикаторы
+        currentIndex = (index + images.length) % images.length;
+        
+        backgroundZoom.style.backgroundImage = images[currentIndex];
+        progress.style.width = `${((currentIndex + 1) / images.length) * 100}%`;
+        
         indicators.forEach((indicator, i) => {
-            indicator.classList.toggle('active', i === index);
+            indicator.classList.toggle('active', i === currentIndex);
         });
+    }
+
+    // Обработчики для перетаскивания
+    sliderTrack.addEventListener('mousedown', dragStart);
+    sliderTrack.addEventListener('touchstart', dragStart);
+    sliderTrack.addEventListener('mouseup', dragEnd);
+    sliderTrack.addEventListener('touchend', dragEnd);
+    sliderTrack.addEventListener('mouseleave', dragEnd);
+    sliderTrack.addEventListener('mousemove', drag);
+    sliderTrack.addEventListener('touchmove', drag);
+
+    function dragStart(e) {
+        e.preventDefault();
+        isDragging = true;
+        startPosX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+        clearInterval(autoScrollInterval);
+    }
+
+    function drag(e) {
+        if (!isDragging) return;
+        e.preventDefault();
+        
+        const currentPosition = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+        const diff = currentPosition - startPosX;
+        
+        // Определяем направление и переключаем слайд при достаточном перемещении
+        if (Math.abs(diff) > 50) {
+            updateSlider(diff > 0 ? currentIndex - 1 : currentIndex + 1);
+            startPosX = currentPosition;
+        }
+    }
+
+    function dragEnd() {
+        isDragging = false;
+        startAutoScroll();
     }
 
     // Переключение по индикаторам
     indicators.forEach((indicator, index) => {
         indicator.addEventListener('click', () => {
-            currentIndex = index;
-            updateSlider(currentIndex);
+            clearInterval(autoScrollInterval);
+            updateSlider(index);
+            startAutoScroll();
         });
     });
 
-    // Автоматическое переключение слайдов
-    setInterval(() => {
-        currentIndex = (currentIndex + 1) % images.length;
-        updateSlider(currentIndex);
-    }, 5000); // Интервал 5 секунд
+    // Автоматическое переключение
+    function startAutoScroll() {
+        clearInterval(autoScrollInterval);
+        autoScrollInterval = setInterval(() => {
+            updateSlider(currentIndex + 1);
+        }, 5000);
+    }
 
-    // Инициализация первого слайда
+    // Инициализация
     updateSlider(currentIndex);
+    startAutoScroll();
+    
+    // Пауза при наведении
+    headerBanner.addEventListener('mouseenter', () => {
+        clearInterval(autoScrollInterval);
+    });
+    
+    headerBanner.addEventListener('mouseleave', startAutoScroll);
 });
 
 
@@ -515,13 +579,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const fullText = card.querySelector('.reviews_content_full');
 
             if (fullText.classList.contains('visible')) {
-                
+
                 fullText.style.maxHeight = '0';
                 fullText.classList.remove('visible');
                 shortText.style.display = 'block';
                 button.textContent = 'see more';
             } else {
-               
+
                 fullText.style.display = 'block';
                 fullText.style.maxHeight = fullText.scrollHeight + 'px'; // Плавное раскрытие
                 fullText.classList.add('visible');
@@ -529,5 +593,43 @@ document.addEventListener('DOMContentLoaded', () => {
                 button.textContent = 'see less';
             }
         });
+    });
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    const modal = document.getElementById('modalOverlay');
+    const modalImg = document.getElementById('modalImage');
+    const closeBtn = document.querySelector('.modal-close');
+    const projectCards = document.querySelectorAll('.our_projects_card');
+
+    // Обработчик для кнопок на карточках
+    projectCards.forEach(card => {
+        const btn = card.querySelector('button');
+        const img = card.querySelector('img');
+
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            modalImg.src = img.src;
+            modal.classList.add('active');
+        });
+    });
+
+    // Закрытие модального окна
+    closeBtn.addEventListener('click', () => {
+        modal.classList.remove('active');
+    });
+
+    // Закрытие по клику на оверлей
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.classList.remove('active');
+        }
+    });
+
+    // Закрытие по ESC
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+            modal.classList.remove('active');
+        }
     });
 });

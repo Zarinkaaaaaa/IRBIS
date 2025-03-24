@@ -185,6 +185,8 @@ p {
     border-radius: 3.5px;
     overflow: hidden;
     z-index: 3;
+    cursor: pointer;
+    touch-action: pan-y;
 }
 
 .slider_progress {
@@ -1455,7 +1457,7 @@ p {
     overflow: hidden;
     position: relative;
     max-width: 1600px;
-    height: 500px;
+    height: 645px;
 }
 
 .our_projects_cards {
@@ -1464,14 +1466,38 @@ p {
     justify-content: center;
     gap: 40px;
     margin-top: 63px;
-    transition: transform 0.5s ease;
+    transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    will-change: transform;
+    backface-visibility: hidden;
 }
 
 .our_projects_card {
     flex-shrink: 0;
     transition: opacity 0.3s ease, visibility 0.3s ease;
+    max-width: 410px;
+    position: relative;
 }
 
+@supports (gap: 40px) {
+    .our_projects_cards {
+        gap: 40px;
+        margin-right: 0;
+    }
+}
+.our_projects_card img{
+    max-width: 546px;
+    position: relative;
+}
+
+.our_projects_card button{
+    position: absolute;
+    background: none;
+    border: none;
+    bottom: 5.5px;
+    right: 6.5px;
+    width: 11px;
+    cursor: pointer;
+}
 
 .our_projects_filter_link a.active {
     color: #d8ba72;
@@ -1518,6 +1544,49 @@ p {
     opacity: 0;
     transform: translateY(50px);
 }
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  .modal-overlay.active {
+    display: flex;
+    opacity: 1;
+  }
+  
+  .modal-content {
+    position: relative;
+    max-width: 90%;
+    max-height: 90%;
+  }
+  
+  .modal-content img {
+    max-width: 100%;
+    max-height: 80vh;
+    object-fit: contain;
+  }
+  
+  .modal-close {
+    position: absolute;
+    top: -40px;
+    right: 0;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 30px;
+    cursor: pointer;
+  }
 
 @media (max-width: 430px) {
 
