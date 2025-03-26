@@ -662,6 +662,9 @@ p {
     height: auto;
     /* Сохраняем пропорции */
 }
+.bathroom_image img{
+    width: 951px;
+}
 
 .call_us_image:hover img {
     animation: pulse 1.5s infinite;
@@ -720,7 +723,7 @@ p {
     background: #313334;
     display: flex;
     position: relative;
-    height: 865px;
+    height: 839px;
     overflow: hidden; /* Скрываем части изображения, которые выходят за пределы блока */
 }
 
@@ -749,7 +752,8 @@ p {
     transition: transform 0.5s ease;
     max-width: 100%; /* Ограничиваем ширину изображения */
     height: auto; /* Сохраняем пропорции */
-    transform-origin: center; /* Увеличение от центра */
+    transform-origin: center;
+    width: 960px; /* Увеличение от центра */
 }
 
 .gallery_image:hover img {
@@ -797,7 +801,7 @@ p {
 /* Медиа-запросы для адаптации */
 @media screen and (max-width: 1850px) {
     .gallery {
-        height: 680px; /* Уменьшаем высоту блока */
+        height: 665px; /* Уменьшаем высоту блока */
     }
 
     .gallery_image {
